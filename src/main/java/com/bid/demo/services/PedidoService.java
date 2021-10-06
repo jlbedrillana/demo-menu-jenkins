@@ -10,6 +10,8 @@ public interface PedidoService {
 	
 	Pedido guardarPedido(Pedido pedido);
 	
+	Pedido acualizarPedido(Pedido pedido);
+	
 	Pedido obtenerPedidoXId(Long id);
 	
 	Long obtenerIdMaximo();

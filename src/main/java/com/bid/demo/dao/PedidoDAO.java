@@ -8,5 +8,8 @@ import com.bid.demo.models.Pedido;
 public interface PedidoDAO extends JpaRepository<Pedido, Long> {
 
 	@Query(value = "select (COALESCE(max(id),0) + 1) from pedido" , nativeQuery = true)
-	Long obtenerIdMaximo();
+	Long obtenerIdMaximoPedido();
+	
+	@Query(value = "select (COALESCE(max(iddetalle),0) + 1) from detalle" , nativeQuery = true)
+	Long obtenerIdMaximoDetalle();
 }

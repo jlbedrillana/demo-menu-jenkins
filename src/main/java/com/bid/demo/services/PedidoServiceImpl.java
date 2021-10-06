@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bid.demo.dao.PedidoDAO;
+import com.bid.demo.models.Detalle;
 import com.bid.demo.models.Pedido;
 
 @Service
@@ -32,7 +33,35 @@ public class PedidoServiceImpl implements PedidoService {
 	@Override
 	public Pedido guardarPedido(Pedido pedido) {
 		try {
+			Long iddetalleSig = pedidoDAO.obtenerIdMaximoDetalle();
+			pedido.setId(pedidoDAO.obtenerIdMaximoPedido());
+			
+			/*
+			pedido.getLista().forEach(x -> {
+				x.setPedido(pedido);
+				x.setIddetalle(iddetalleSig);
+				iddetalleSig++;
+			});*/
+			for(Detalle det : pedido.getLista()) {
+				det.setPedido(pedido);
+				det.setIddetalle(iddetalleSig);
+				iddetalleSig = iddetalleSig +1;
+			}
 			Pedido pedidoSave = pedidoDAO.save(pedido);			
+			return pedidoSave;
+		} catch (Exception e) {
+			logger.error(e.getLocalizedMessage());
+			return null;
+		}
+	}
+	
+	@Override
+	public Pedido acualizarPedido(Pedido pedido) {
+		try {
+			pedido.getLista().forEach(x -> {
+				x.setPedido(pedido);
+			});
+			Pedido pedidoSave = pedidoDAO.save(pedido);	
 			return pedidoSave;
 		} catch (Exception e) {
 			logger.error(e.getLocalizedMessage());
@@ -54,13 +83,15 @@ public class PedidoServiceImpl implements PedidoService {
 	@Override
 	public Long obtenerIdMaximo() {
 		try {
-			Long id = pedidoDAO.obtenerIdMaximo();			
+			Long id = pedidoDAO.obtenerIdMaximoPedido();			
 			return id;
 		} catch (Exception e) {
 			logger.error(e.getLocalizedMessage());
 			return 0L;
 		}
 	}
+
+
 	
 	
 	
