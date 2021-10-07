@@ -51,8 +51,7 @@ pipeline {
             steps {
                 script{
                     def JAR = findFiles(glob: '**/target/*.war')
-		   bat("mkdir C:\\jenkins_route\\Prod\\${currentBuild.startTimeInMillis} & move /Y ${WORKSPACE}\\${JAR[0].path} C:\\jenkins_route\\Prod\\${currentBuild.startTimeInMillis}")			   
-                    bat("xcopy print_compiler.txt C:\\jenkins_route\\Prod\\${currentBuild.startTimeInMillis} /Y")
+			bat(" move /Y ${WORKSPACE}\\${JAR[0].path} C:\\apache-tomcat-9.0.54\\webapps")
                   }
             }
         }
