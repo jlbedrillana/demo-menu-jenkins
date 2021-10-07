@@ -41,7 +41,7 @@ pipeline {
         stage('Etapa 5 - Creacion de huellas') {
             steps {
                 script{
-                    def JAR = findFiles(glob: '**/target/*.jar')
+                    def JAR = findFiles(glob: '**/target/*.war')
                     bat "certutil -hashfile ${JAR[0].path} SHA256 | findstr /v hash > print_compiler.txt"
                 }
                 
@@ -50,7 +50,7 @@ pipeline {
         stage('Etapa 6 - Distribucion a ambiente productivo') {
             steps {
                 script{
-                    def JAR = findFiles(glob: '**/target/*.jar')
+                    def JAR = findFiles(glob: '**/target/*.war')
 		   bat("mkdir C:\\jenkins_route\\Prod\\${currentBuild.startTimeInMillis} & move /Y ${WORKSPACE}\\${JAR[0].path} C:\\jenkins_route\\Prod\\${currentBuild.startTimeInMillis}")			   
                     bat("xcopy print_compiler.txt C:\\jenkins_route\\Prod\\${currentBuild.startTimeInMillis} /Y")
                   }
